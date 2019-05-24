@@ -9,7 +9,7 @@ import styles from "./ProjectList.module.scss";
 import Spinner from "../Spinner/Spinner";
 import AppState from "../../interfaces/AppState";
 
-class ProjectList extends Component<AppState> {
+export class ProjectList extends Component<AppState> {
   componentDidMount() {
     store.dispatch(fetchProjectsBegin());
   }

@@ -13,6 +13,7 @@ class ProjectCard extends PureComponent<Project> {
     const { id, name, address, startDate, completed } = this.props;
 
     const completedClass = completed ? " " + styles.completed : "";
+    const titleCompletedClass = completed ? " " + styles.titleCompleted : "";
 
     return (
       <div className={styles.detailsArea + completedClass}>
@@ -21,10 +22,10 @@ class ProjectCard extends PureComponent<Project> {
           {new Date(startDate).toLocaleDateString("en-GB")}
         </div>
         <div className={styles.job}>
-          <div className={styles.title + completedClass}>Project</div> {name}
+          <div className={styles.title + titleCompletedClass}>Project</div> {name}
         </div>
         <div className={styles.address}>
-          <div className={styles.title + completedClass}>Address</div>{" "}
+          <div className={styles.title + titleCompletedClass}>Address</div>{" "}
           {address.toString()}
         </div>
         {completed ? (

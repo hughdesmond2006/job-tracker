@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectCard /> renders a complete project card 1`] = `
+<div
+  className="detailsArea completed"
+>
+  <div
+    className="id completed"
+  >
+    #
+    4
+  </div>
+  <div
+    className="date completed"
+  >
+    4/23/2019
+  </div>
+  <div
+    className="job"
+  >
+    <div
+      className="title titleCompleted"
+    >
+      Project
+    </div>
+     
+    3 Bedroom Refurb
+  </div>
+  <div
+    className="address"
+  >
+    <div
+      className="title titleCompleted"
+    >
+      Address
+    </div>
+     
+    159 Amiens Street,Dublin 13
+  </div>
+  <div
+    className="completeButton completed"
+  >
+    Completed!
+  </div>
+</div>
+`;
+
+exports[`<ProjectCard /> renders an incomplete project card 1`] = `
+<div
+  className="detailsArea"
+>
+  <div
+    className="id"
+  >
+    #
+    12
+  </div>
+  <div
+    className="date"
+  >
+    4/12/2019
+  </div>
+  <div
+    className="job"
+  >
+    <div
+      className="title"
+    >
+      Project
+    </div>
+     
+    A nice Job
+  </div>
+  <div
+    className="address"
+  >
+    <div
+      className="title"
+    >
+      Address
+    </div>
+     
+    Test Address,Test Street
+  </div>
+  <div
+    className="completeButton"
+    onClick={[Function]}
+  >
+    Mark as Complete!
+  </div>
+</div>
+`;
+
+exports[`<ProjectList /> renders populated list 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "error": null,
+      "loading": false,
+      "projects": Array [
+        Object {
+          "address": Array [
+            "217 East Wall Road",
+            "Dublin 19",
+          ],
+          "completed": false,
+          "id": 9,
+          "name": "Living Room Update",
+          "startDate": "2019-04-24T00:00:00.000Z",
+        },
+        Object {
+          "address": Array [
+            "198 Fishamble Street",
+            "Dublin 10",
+          ],
+          "completed": true,
+          "id": 6,
+          "name": "Window Replacements",
+          "startDate": "2019-04-13T00:00:00.000Z",
+        },
+        Object {
+          "address": Array [
+            "99 Mountjoy Square",
+            "Dublin 1",
+          ],
+          "completed": false,
+          "id": 7,
+          "name": "3 Bedroom Refurb",
+          "startDate": "2019-04-13T00:00:00.000Z",
+        },
+      ],
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "clear": [Function],
+          "get": [Function],
+          "notify": [Function],
+          "subscribe": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": [Function],
+      },
+    }
+  }
+>
+  <ConnectFunction />
+</ContextProvider>
+`;
+
+exports[`<ProjectList /> renders the loading spinner 1`] = `
+<div
+  className="spinner"
+/>
+`;

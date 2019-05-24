@@ -1,13 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import Enzyme, { mount, shallow } from "enzyme";
+import Enzyme, { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import configureStore, { MockStore } from "redux-mock-store";
 
 import ProjectCard from "./components/ProjectCard/ProjectCard";
 import ProjectList from "./components/ProjectList/ProjectList";
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import Project from "./interfaces/Project";
+import {
+  completeProjectBegin,
+  fetchProjectsBegin,
+  resetBegin
+} from "./redux/actions/projectActions";
+import toJson from "enzyme-to-json";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -40,45 +48,24 @@ const testCard2 = (
 );
 
 describe("<ProjectCard />", () => {
+  //smoke
+  it("renders without crashing", () => {
+    const div = document.createElement("div");
+    ReactDOM.render(testCard1, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+
   // make sure the correct details are rendered and
   // in the correct format
   it("renders an incomplete project card", () => {
     const projectCard = shallow(testCard1);
-
-    const expectedOutput =
-      '<div class="detailsArea">' +
-      '<div class="id">#12</div>' +
-      '<div class="date">4/12/2019</div>' +
-      '<div class="job">' +
-      '<div class="title">Project</div>' +
-      ' A nice Job</div>' +
-      '<div class="address">' +
-      '<div class="title">Address</div>' +
-      ' Test Address,Test Street</div>' +
-      '<div class="completeButton">Mark as Complete!</div>' +
-      '</div>';
-
-    expect(projectCard.html()).toEqual(expectedOutput);
+    expect(projectCard).toMatchSnapshot();
   });
 
   // tests to see a complete project is rendered appropriately
   it("renders a complete project card", () => {
     const projectCard = shallow(testCard2);
-
-    const expectedOutput =
-      '<div class="detailsArea completed">' +
-      '<div class="id completed">#4</div>' +
-      '<div class="date completed">4/23/2019</div>' +
-      '<div class="job">' +
-      '<div class="title completed">Project</div>' +
-      ' 3 Bedroom Refurb</div>' +
-      '<div class="address">' +
-      '<div class="title completed">Address</div>' +
-      ' 159 Amiens Street,Dublin 13</div>' +
-      '<div class="completeButton completed">Completed!</div>' +
-      '</div>';
-
-    expect(projectCard.html()).toEqual(expectedOutput);
+    expect(projectCard).toMatchSnapshot();
   });
 });
 
@@ -106,72 +93,98 @@ const testProjectList = [
   }
 ];
 
+const initialState: {
+  projects: Project[];
+  loading: boolean;
+  error: Error;
+} = {
+  projects: [...testProjectList],
+  loading: false,
+  error: null
+};
+
 describe("<ProjectList />", () => {
+  //smoke
+  it("renders without crashing", () => {
+    const div = document.createElement("div");
+    ReactDOM.render(
+      <Provider store={store}>
+        <ProjectList />
+      </Provider>,
+      div
+    );
+    ReactDOM.unmountComponentAtNode(div);
+  });
+
   // this tests the loading animation is working
   it("renders the loading spinner", () => {
-    const projectList = shallow(
+    const projectList = mount(
       <Provider store={store}>
         <ProjectList />
       </Provider>
     );
 
-    const expectedOutput =
-      '<div class="reset">Reset</div>' + '<div class="spinner">' + "</div>";
+    const spinnerClass = projectList.find("div.spinner");
 
-    expect(projectList.html()).toEqual(expectedOutput);
+    expect(spinnerClass).toMatchSnapshot();
   });
 
   // this ensures the list is rendered properly and that the
   // incomplete projects appear first
-  it("renders list", async () => {
-    const projectList = await mount(
+  it("renders populated list", () => {
+    const mockStore = configureStore();
+    let store: MockStore;
+    let wrapper: ShallowWrapper;
+
+    // setup mount with mock redux store before each test
+    store = mockStore(initialState);
+    wrapper = shallow(
       <Provider store={store}>
         <ProjectList />
       </Provider>
     );
 
-    const expectedOutput =
-      '<div class="reset">Reset</div>' +
-      '<ul class="list">' +
-      "<li>" +
-      '<div class="detailsArea">' +
-      '<div class="detailsWrap">' +
-      '<div class="id">#7</div>' +
-      '<div class="job">Job: 3 Bedroom Refurb</div>' +
-      '<div class="address">Address: 99 Mountjoy Square,Dublin 1</div>' +
-      '<div class="date">Date: 4/13/2019</div>' +
-      '<div class="incomplete">Mark as Complete!</div>' +
-      "</div>" +
-      "</div>" +
-      "</li>" +
-      "<li>" +
-      '<div class="detailsArea">' +
-      '<div class="detailsWrap">' +
-      '<div class="id">#9</div>' +
-      '<div class="job">Job: Living Room Update</div>' +
-      '<div class="address">Address: 217 East Wall Road,Dublin 19</div>' +
-      '<div class="date">Date: 4/24/2019</div>' +
-      '<div class="incomplete">Mark as Complete!</div>' +
-      "</div>" +
-      "</div>" +
-      "</li>" +
-      "<li>" +
-      '<div class="detailsArea">' +
-      '<div class="detailsWrap">' +
-      '<div class="id">#6</div>' +
-      '<div class="job">Job: Window Replacements</div>' +
-      '<div class="address">Address: 198 Fishamble Street,Dublin 10</div>' +
-      '<div class="date">Date: 4/13/2019</div>' +
-      "<div>Completed!</div>" +
-      "</div>" +
-      "</div>" +
-      "</li>" +
-      "</ul>";
+    wrapper.setState({...initialState});
 
-    projectList.setState({ projects: testProjectList, loading: false });
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+});
 
-    console.log(projectList.html());
+describe("Redux", () => {
+  const mockStore = configureStore();
+  let store: MockStore;
+  let wrapper: ReactWrapper;
 
-    expect(projectList.html()).toEqual(expectedOutput);
+  // setup mount with mock redux store before each test
+  beforeEach(() => {
+    store = mockStore(initialState);
+    wrapper = mount(
+      <Provider store={store}>
+        <ProjectList {...initialState} />
+      </Provider>
+    );
+  });
+
+  it("has props matching with initialState", () => {
+    expect(wrapper.find(ProjectList).prop("projects")).toEqual(
+      initialState.projects
+    );
+    expect(wrapper.find(ProjectList).prop("loading")).toEqual(
+      initialState.loading
+    );
+    expect(wrapper.find(ProjectList).prop("error")).toEqual(initialState.error);
+  });
+
+  it("can dispatch actions", () => {
+    let action;
+    store.dispatch(fetchProjectsBegin());
+    store.dispatch(completeProjectBegin(1));
+    store.dispatch(resetBegin());
+
+    action = store.getActions();
+
+    expect(action[0].type).toBe("FETCH_PROJECTS_BEGIN");
+    expect(action[1].type).toBe("COMPLETE_PROJECT_BEGIN");
+    expect(action[2].type).toBe("RESET_BEGIN");
   });
 });
