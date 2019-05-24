@@ -1,0 +1,31 @@
+$gold: #E7BD90;
+$lightGold: #eec497;
+
+.list{
+    list-style: none;
+    margin: 0 auto;
+    width: 400px;
+    padding: 8px 0 0px;
+    @media not screen and (min-width: 400px){
+        width: 100%;
+    }
+}
+
+.reset {
+    margin: 10px;
+    border-radius: 3px;
+    background-color: $gold;
+    color: white;
+    cursor: pointer;
+    font-weight: 200;
+    font-size: .9rem;
+    padding: 4px;
+    left: 0;
+    width: 60px;
+    position: fixed;
+    z-index: 1;
+}
+
+.reset:hover {
+    background: $lightGold;
+}

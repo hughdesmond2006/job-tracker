@@ -1,0 +1,84 @@
+$lightText: #adadad;
+$green: #69A780;
+$lightGreen: #7ac39a;
+
+.detailsArea {
+  position: relative;
+  padding: 8px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.48);
+  transition: background-color 300ms ease-out;
+}
+
+.detailsArea:hover {
+  background: #fbfbfb;
+  transition: none;
+}
+
+.completeButton {
+  position: absolute;
+  border-radius: 4px;
+  background-color: $green;
+  color: white;
+  cursor: pointer;
+  font-weight: 200;
+  padding: 4px;
+  bottom: 12px;
+  left: 50%;
+  width: 160px;
+  margin-left: -80px;
+}
+
+.completeButton:hover {
+  background-color: $lightGreen;
+}
+
+.id{
+  float: left;
+}
+
+.date{
+  float: right;
+}
+
+.id, .date{
+  font-weight: 200;
+  color: $lightText;
+  font-size: .8rem;
+}
+
+.job{
+  margin-top: 26px;
+  text-align: center;
+}
+
+.address{
+  margin-top: 6px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.completed, .completed:hover{
+  background: #87A3AE;
+  color: white;
+  border: none;
+  cursor: default;
+}
+
+.title{
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  color: #396677;
+}
+
+.titleCompleted, .titleCompleted:hover{
+  color: #eedcc7;
+}
+
+
+
+
+
